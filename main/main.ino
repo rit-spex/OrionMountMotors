@@ -5,7 +5,7 @@
 #include "IRremote.h"
 /*----- Variables, Pins -----*/
 #define STEPS  10   // Number of steps per revolution of Internal shaft
-#define s  500  // 2048 = 1 Revolution
+#define s  5  // 2048 = 1 Revolution
 #define SPEED 500
 #define receiver 12 // Signal Pin of IR receiver to Arduino Digital Pin 12
 
@@ -16,6 +16,8 @@ Stepper altitude(STEPS, 8, 10, 9, 11);
 Stepper azimuth(STEPS, 4, 6, 5, 7);
 IRrecv irrecv(receiver);    // create instance of 'irrecv'
 decode_results results;     // create instance of 'decode_results'
+unsigned long code;
+
 void setup(){ 
   irrecv.enableIRIn(); // Start the receiver
   altitude.setSpeed(SPEED);
@@ -26,8 +28,12 @@ void setup(){
 void loop(){
   if (irrecv.decode(&results)) // have we received an IR signal?
     {
+      if(results.value != 0xFFFFFFFF){
+        code = results.value;
+      }
       Serial.println(results.value, HEX);
-      switch(results.value)
+      Serial.println(code, HEX);
+      switch(code)
       {
         case 0xFF629D: // VOL+ button pressed
           stepUp();
@@ -44,6 +50,9 @@ void loop(){
         case 0xFF22DD:
           stepCounterclockwise();
           cleanAzimuth();
+          break;
+        default:
+          irrecv.resume();
           break;
       }      
   }  
