@@ -1,2 +1,2 @@
 # Orion Mount Motors
-Arduino code to run the two stepper moters for the Orion telescope
+Arduino code to run the two stepper motors for the Orion telescope
