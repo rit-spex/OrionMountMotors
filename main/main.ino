@@ -51,10 +51,8 @@ void loop(){
           stepCounterclockwise();
           cleanAzimuth();
           break;
-        default:
-          irrecv.resume();
-          break;
-      }      
+      }
+      irrecv.resume(); // receive the next value
   }  
 }/* --end main loop -- */
 
@@ -71,14 +69,12 @@ void stepCounterclockwise(){
   azimuth.step(-s);
 }
 void cleanAltitude(){
-  irrecv.resume(); // receive the next value
   digitalWrite(8, LOW);
   digitalWrite(9, LOW);
   digitalWrite(10, LOW);
   digitalWrite(11, LOW);
 }
 void cleanAzimuth(){
-  irrecv.resume(); // receive the next value
   digitalWrite(4, LOW);
   digitalWrite(5, LOW);
   digitalWrite(6, LOW);
